@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.get_layout);
         textView = (TextView) findViewById(R.id.textView);
     }
-
+    //Just trying to get an AsyncTask to execute
     private class getImgTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params){
