@@ -1,3 +1,4 @@
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,7 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -22,9 +24,10 @@ import java.util.ArrayList;
 import java.io.*;
 
 public class MainActivity extends Activity {
-    private TextView textView;
+    //private TextView textView;
     private Button nextButton;
     private Button previousButton;
+    private ImageView imageView;
     String url = null;
     Context context = this;
     public ArrayList<String> urlList = new ArrayList<String>();
@@ -35,9 +38,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_layout);
-        textView = (TextView) findViewById(R.id.textView);
+        //textView = (TextView) findViewById(R.id.textView);
         nextButton = (Button) findViewById(R.id.next);
         previousButton = (Button) findViewById(R.id.previous);
+        imageView = (ImageView) findViewById(R.id.imageView);
+        getUrlTask task = new getUrlTask();
+        task.execute("http://reddit.com/r/earthporn");
+
     }
 
     private class getUrlTask extends AsyncTask<String, Void, ArrayList<String>> {
@@ -71,9 +78,13 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(ArrayList<String> result){
             //set textView for testing purposes
-            textView.setText(result.get(0));
-            //set url that image will be loaded from
+            //textView.setText(result.get(0));
+            url = linkList.get(0);
             urlList = linkList;
+            setWallpaper initial = new setWallpaper();
+            initial.execute(url);
+            nextButton.setVisibility(View.VISIBLE);
+            previousButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -103,7 +114,6 @@ public class MainActivity extends Activity {
 
         @Override
         protected Bitmap doInBackground(String... params) {
-            //url = urlList.get(3);
             ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
             ImageLoader.getInstance().init(config.build());
             Bitmap result = ImageLoader.getInstance().loadImageSync(url);
@@ -116,39 +126,40 @@ public class MainActivity extends Activity {
             }catch(IOException e){
                 e.printStackTrace();
             }
+            imageView.setImageBitmap(result);
         }
     }
 
-    public void onClick(View view) {
+    /*public void onClick(View view) {
         getUrlTask task = new getUrlTask();
-        task.execute("http://reddit.com/r/wallpapers");
-        nextButton.setVisibility(View.VISIBLE);
-        previousButton.setVisibility(View.VISIBLE);
-    }
+        task.execute("http://reddit.com/r/iwallpaper");
+    }*/
 
-    public void onClickSet(View view) {
+    /*public void onClickSet(View view) {
         setWallpaper set = new setWallpaper();
         set.execute(url);
-    }
+    }*/
 
     public void onClickNext(View view){
-
         if(select < (urlList.size() - 1)) {
             select = select + 1;
         }
         url = urlList.get(select);
-        textView.setText(url);
-    }
+        //textView.setText(url);
+        setWallpaper setNext = new setWallpaper();
+        setNext.execute(url);
+        }
 
     public void onClickPrevious(View view){
-
         if(select>0) {
             select = select - 1;
         }
         url = urlList.get(select);
-        textView.setText(url);
+        //textView.setText(url);
+        setWallpaper setPrevious = new setWallpaper();
+        setPrevious.execute(url);
     }
-
-
-
+    public void onClickSave(View view){
+        Toast.makeText(getApplicationContext(), R.string.toast_save_message, Toast.LENGTH_LONG).show();
+    }
 }
