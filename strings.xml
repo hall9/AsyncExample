@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AsyncPracticeProject</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="get_button">get</string>
+    <string name="text_view"></string>
+    <string name="set_button">set</string>
+    <string name="next_button">next</string>
+    <string name="previous_button">previous</string>
+    <string name="image_view">Placehobder</string>
+    <string name="save">save</string>
+    <string name="toast_save_message">button no work</string>
+
+</resources>
