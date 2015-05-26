@@ -1,0 +1,98 @@
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import android.app.WallpaperManager;
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.ArrayList;
+import java.io.*;
+
+public class MainActivity extends Activity {
+    private TextView textView;
+    String url = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.get_layout);
+        textView = (TextView) findViewById(R.id.textView);
+    }
+
+    private class getUrlTask extends AsyncTask<String, Void, String> {
+        private Document doc = null;
+        public ArrayList<String> linkList = new ArrayList<String>();
+        @Override
+        protected String doInBackground(String... params){
+            String rooturl = params[0];
+            try{
+                //pull full source
+                doc = Jsoup.connect(rooturl)
+                        .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0")
+                        .timeout(3000)
+                        .get();
+                //select and store links to .jpg files on imgur
+                Elements aList = doc.select("a");
+                for(Element link : aList){
+                    String href = link.attr("href");
+                    if(href.contains("imgur.com")&&!href.contains("domain")&&href.contains(".jp")){
+                        if(!linkList.contains(href)){
+                            linkList.add(href);
+                        }
+                    }
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            return linkList.get(0);
+        }
+        @Override
+        protected void onPostExecute(String result){
+            //set textView for testing purposes
+            textView.setText(result);
+            //set url that image will be loaded from
+            url = result;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onClick(View view) {
+        getUrlTask task = new getUrlTask();
+        task.execute("http://reddit.com/r/wallpapers");
+
+    }
+}
