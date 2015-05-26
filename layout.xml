@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--
+    <Button
+        android:id="@+id/get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="@string/get_button">
+    </Button>
+    -->
+    <!--
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id ="@+id/set"
+        android:onClick="onClickSet"
+        android:text="@string/set_button">
+    </Button>
+    -->
+    <ImageView
+        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/imageView"
+        android:layout_centerVertical="true"
+        android:text="@string/image_view"/>
+    <Button
+        android:layout_width="@dimen/save_icon_length"
+        android:layout_height="@dimen/save_icon_length"
+        android:id="@+id/save"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@id/imageView"
+        android:drawableRight="@drawable/ic_action_save"
+        android:onClick="onClickSave"
+        style="?android:attr/borderlessButtonStyle"
+            />
+
+    <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id ="@+id/next"
+    android:onClick="onClickNext"
+    android:visibility="invisible"
+    android:layout_alignBottom="@id/imageView"
+    android:layout_toRightOf="@id/save"
+    android:drawableLeft="@drawable/ic_action_fast_forward"
+    style="?android:attr/borderlessButtonStyle"
+    />
+
+    <Button
+        android:drawableLeft="@drawable/ic_action_rewind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id ="@+id/previous"
+        android:onClick="onClickPrevious"
+        android:visibility="invisible"
+        android:layout_alignBottom="@id/imageView"
+        android:layout_toLeftOf="@id/save"
+        style="?android:attr/borderlessButtonStyle"
+        />
+
+    <!--
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_view"/>
+    -->
+</RelativeLayout>
